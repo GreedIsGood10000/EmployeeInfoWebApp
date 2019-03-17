@@ -1,0 +1,62 @@
+﻿@page
+@model EmployeeInfoWebApp.Pages.EmployeeInfoCreateModel
+
+@using EmployeeInfoWebApp.Models
+
+@{
+    ViewData["Title"] = "EmployeeInfoCreate";
+}
+
+<h1>Добавление информации о сотруднике</h1>
+
+<h4>Информация о сотруднике</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployeeInfo.FullName" class="control-label"></label>
+                <input asp-for="EmployeeInfo.FullName" class="form-control" />
+                <span asp-validation-for="EmployeeInfo.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeInfo.Phone" class="control-label"></label>
+                <input asp-for="EmployeeInfo.Phone" class="form-control" />
+                <span asp-validation-for="EmployeeInfo.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeInfo.Email" class="control-label"></label>
+                <input asp-for="EmployeeInfo.Email" class="form-control" />
+                <span asp-validation-for="EmployeeInfo.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeInfo.City" class="control-label"></label>
+                <select asp-for="EmployeeInfo.City" asp-items="Html.GetEnumSelectList<City>()" class="form-control"></select>
+                <span asp-validation-for="EmployeeInfo.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Create" class="btn btn-primary" onclick="submitData()" /> 
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function submitData() {
+        $.ajax({
+            type: "POST",
+            url: "/EmployeeInfoCreate",
+            contentType: "application/x-www-form-urlencoded",
+            data: $('form').serialize(),
+            success: function() {
+                alert('Запись сохранена!');
+            }
+    });
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
