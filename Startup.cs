@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using EmployeeInfoWebApp.Models;
+using EmployeeInfoWebApp.Repo;
+using EmployeeInfoWebApp.Services;
 
 namespace EmployeeInfoWebApp
 {
@@ -37,7 +38,10 @@ namespace EmployeeInfoWebApp
 
             services.AddDbContext<EmployeeInfoWebAppContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("EmployeeInfoWebAppContext")));
-                  //  options.UseInMemoryDatabase(Configuration.GetConnectionString("EmployeeInfoWebAppContext")));
+
+            services.AddScoped(typeof(IEmployeeInfoRepository), typeof(EmployeeInfoRepository));
+
+            services.AddTransient<IEmployeeInfoService, EmployeeInfoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +57,6 @@ namespace EmployeeInfoWebApp
             }
 
             app.UseStaticFiles();
-           // app.UseCookiePolicy();
 
             app.UseMvc();
         }

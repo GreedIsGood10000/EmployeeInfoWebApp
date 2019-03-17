@@ -1,18 +1,18 @@
 ﻿using System.Threading.Tasks;
+using EmployeeInfoWebApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using EmployeeInfoWebApp.Models;
-using EmployeeInfoWebApp.Repositories;
+using EmployeeInfoWebApp.Services;
 
 namespace EmployeeInfoWebApp.Pages
 {
     public class EmployeeInfoCreateModel : PageModel
     {
-        private readonly EmployeeInfoRepository _repository;
+        private readonly IEmployeeInfoService _service;
 
-        public EmployeeInfoCreateModel(EmployeeInfoWebApp.Models.EmployeeInfoWebAppContext context)
+        public EmployeeInfoCreateModel(IEmployeeInfoService service)
         {
-            _repository = new EmployeeInfoRepository(context);
+            _service = service;
         }
 
         public IActionResult OnGet()
@@ -31,7 +31,7 @@ namespace EmployeeInfoWebApp.Pages
             }
 
             //Application service
-            await _repository.Create(EmployeeInfo);
+            await _service.Create(EmployeeInfo);
 
             return Page();
         }
